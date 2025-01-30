@@ -46,21 +46,28 @@ app.post('/2', async (req, res) => {
     res.send(data2)
 });
 app.get("/3", async (req, res) => {
-
     async function thrid_calling() {
-    
-        const name="Nikhil";
-        const invoiceNumber="SME001";
-        const issueDateTime="2024-02-11T22:29:36"
-        const vatNumber="300075588700003";
-        const env="core"
-        const response = await axios.get(
-            `http://app.apizatca.com/api/downloadPDF?name=${name}&invoiceNumber=${invoiceNumber}&issueDateTime=${issueDateTime}&vatNumber=${vatNumber}&env=${env}`,
-        );
+        try {
+            const name = "Nikhil";
+            const invoiceNumber = "SME001";
+            const issueDateTime = "2024-02-11T22:29:36";
+            const vatNumber = "300075588700003";
+            const env = "core";
+
+            const response = await axios.get(
+                `http://app.apizatca.com/api/downloadPDF?name=${name}&invoiceNumber=${invoiceNumber}&issueDateTime=${issueDateTime}&vatNumber=${vatNumber}&env=${env}`
+            );
+
+            return response.data; // Return the response data
+        } catch (error) {
+            console.error("Error fetching PDF:", error.message);
+            return { error: "Failed to fetch PDF" }; // Return an error message
+        }
     }
-    const data3 = await thrid_calling()
-    res.send(data3)
-})
+
+    const data3 = await thrid_calling();
+    res.send(data3); // Send the response data
+});
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
 });
